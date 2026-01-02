@@ -1,6 +1,8 @@
 services:
   robot-brain:
-    image: ros:humble-ros-base
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
     container_name: picar_brain
     restart: always
     network_mode: host
@@ -8,16 +10,11 @@ services:
       - .:/home/tim/picar_ws
       - ~/picar_data:/root/data
     environment:
-      # 桶名：使用你最新的 edge-to-cloud-robotics-landing-s3
-      - S3_BUCKET=edge-to-cloud-robotics-landing-s3
-      
-      # 核心：告诉容器去哪里找 MinIO (通常是宿主机的 IP)
-      - S3_ENDPOINT_URL=http://192.168.0.190:9000 
-      
-      # 模拟凭证（MinIO 默认通常是这些，如果改了请替换）
-      - AWS_ACCESS_KEY_ID=admin
-      - AWS_SECRET_ACCESS_KEY=password123
-      
+      # S3 Configuration from .env file
+      - S3_BUCKET=${S3_BUCKET_NAME}
+      - S3_ENDPOINT_URL=http://${S3_ENDPOINT}
+      - AWS_ACCESS_KEY_ID=${S3_ACCESS_KEY}
+      - AWS_SECRET_ACCESS_KEY=${S3_SECRET_KEY}
       - ROS_DOMAIN_ID=30
     stdin_open: true
     tty: true

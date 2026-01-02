@@ -1,0 +1,19 @@
+# Secrets
+.env
+
+# Docker and local data
+data/
+picar_data/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+
+# ROS 2 build artifacts
+install/
+build/
+log/
