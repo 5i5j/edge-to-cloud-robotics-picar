@@ -1,0 +1,23 @@
+services:
+  robot-brain:
+    image: ros:humble-ros-base
+    container_name: picar_brain
+    restart: always
+    network_mode: host
+    volumes:
+      - .:/home/tim/picar_ws
+      - ~/picar_data:/root/data
+    environment:
+      # 桶名：使用你最新的 edge-to-cloud-robotics-landing-s3
+      - S3_BUCKET=edge-to-cloud-robotics-landing-s3
+      
+      # 核心：告诉容器去哪里找 MinIO (通常是宿主机的 IP)
+      - S3_ENDPOINT_URL=http://192.168.0.190:9000 
+      
+      # 模拟凭证（MinIO 默认通常是这些，如果改了请替换）
+      - AWS_ACCESS_KEY_ID=admin
+      - AWS_SECRET_ACCESS_KEY=password123
+      
+      - ROS_DOMAIN_ID=30
+    stdin_open: true
+    tty: true
